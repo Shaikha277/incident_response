@@ -1,0 +1,15 @@
+export enum ThreatType {
+  PHISHING = 'Phishing',
+  MALWARE = 'Malware',
+  RANSOMWARE = 'Ransomware',
+  DDOS = 'DDoS',
+  DATA_BREACH = 'Data Breach',
+  SQL_INJECTION = 'SQL Injection',
+  BRUTE_FORCE = 'Brute Force Attack',
+  CREDENTIAL_STUFFING = 'Credential Stuffing',
+  INSIDER_THREAT = 'Insider Threat',
+  SOCIAL_ENGINEERING = 'Social Engineering',
+  DNS_SPOOFING = 'DNS Spoofing',
+  MITM = 'Man-in-the-Middle',
+  OTHER = 'Other',
+}

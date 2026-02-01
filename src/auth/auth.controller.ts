@@ -3,6 +3,7 @@ import type { Request } from 'express';
 import { RegisterDto } from 'src/users/dto/register.dto';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
+import { Throttle } from '@nestjs/throttler';
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -15,6 +16,7 @@ export class AuthController {
   }
 
   @Post('login')
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
   async login(@Body() dto: LoginDto, @Req() req: Request) {
     const ipAddress = req.ip;
     const userAgent = req.headers['user-agent'];

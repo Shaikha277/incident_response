@@ -10,9 +10,16 @@ import { Incident } from './incidents/incident.entity';
 import { UsersModule } from './users/users.module';
 import { AuditLogModule } from './audit-logs/audit-log.module';
 import { AuditLog } from './audit-logs/audit-log.entity';
-
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 @Module({
   imports: [
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000,
+        limit: 100,
+      },
+    ]),
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
@@ -24,7 +31,7 @@ import { AuditLog } from './audit-logs/audit-log.entity';
       username: process.env.DB_USER,
       password: process.env.DB_PASS,
       database: process.env.DB_NAME,
-      entities: [User, Incident,AuditLog],
+      entities: [User, Incident, AuditLog],
       synchronize: process.env.NODE_ENV === 'development',
       logging: process.env.NODE_ENV === 'development',
       ssl:
@@ -39,6 +46,12 @@ import { AuditLog } from './audit-logs/audit-log.entity';
     AuditLogModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+    AppService,
+  ],
 })
 export class AppModule {}

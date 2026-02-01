@@ -1,32 +1,70 @@
-import { Body, Controller, Post, Req , UseGuards} from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Incident } from './incident.entity';
-import { User } from '../users/user.entity';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
+import { IncidentsService } from './incidents.service';
 import { CreateIncidentDto } from './dto/create-incident.dto';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { log } from 'console';
+import { UpdateIncidentDto } from './dto/update-incident.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import type { Request } from 'express';
 
-@UseGuards(JwtAuthGuard)
 @Controller('incidents')
+@UseGuards(JwtAuthGuard)
 export class IncidentsController {
-  constructor(
-    @InjectRepository(Incident)
-    private readonly incidentRepo: Repository<Incident>,
-  ) {}
+  constructor(private readonly incidentsService: IncidentsService) {}
 
   @Post()
-  async createIncident(@Body() dto: CreateIncidentDto, @Req() req) {
-    const user: User = req.user;
-    console.log('USER:', req.user);
+  create(@Body() createIncidentDto: CreateIncidentDto, @Req() req: any) {
+    const ipAddress = req.ip;
+    const userAgent = req.headers['user-agent'];
+    return this.incidentsService.create(
+      createIncidentDto,
+      req.user,
+      ipAddress,
+      userAgent,
+    );
+  }
 
+  @Get()
+  findAll(@Req() req: any) {
+    return this.incidentsService.findAll(req.user);
+  }
 
-    const incident = this.incidentRepo.create({
-      ...dto,
-      createdBy: user, 
-    });
+  @Get(':id')
+  findOne(@Param('id') id: string, @Req() req: any) {
+    const ipAddress = req.ip;
+    const userAgent = req.headers['user-agent'];
+    return this.incidentsService.findOne(id, req.user, ipAddress, userAgent);
+  }
 
-    return await this.incidentRepo.save(incident);
-    
+  @Patch(':id')
+  update(
+    @Param('id') id: string,
+    @Body() updateIncidentDto: UpdateIncidentDto,
+    @Req() req: any,
+  ) {
+    const ipAddress = req.ip;
+    const userAgent = req.headers['user-agent'];
+    return this.incidentsService.update(
+      id,
+      updateIncidentDto,
+      req.user,
+      ipAddress,
+      userAgent,
+    );
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string, @Req() req: any) {
+    const ipAddress = req.ip;
+    const userAgent = req.headers['user-agent'];
+    return this.incidentsService.remove(id, req.user, ipAddress, userAgent);
   }
 }

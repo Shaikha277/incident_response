@@ -50,7 +50,7 @@ export class User {
   provider: AuthProvider;
 
   @Column({ name: 'google_id', nullable: true, unique: true })
-  googleId: string;
+  googleId: string; //Reserved for future Google OAuth integration
 
   @Column({
     type: 'enum',

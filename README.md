@@ -83,6 +83,11 @@ http://localhost:3000/api
 - **Docs:** Swagger (OpenAPI)
 
 ---
+## Generate a secure secret:
+```bash
+  node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+
+```
 
 ## ⚙️ Environment Variables
 
@@ -98,8 +103,8 @@ DB_USER=postgres
 DB_PASS=password
 DB_NAME=incident_response
 
-JWT_SECRET=941b4526e307291c20fa231fd09bbef69ded50a7a5ca522972a347ae213478c7
-JWT_REFRESH_SECRET=3f82f4335135b6d7e2930b5dde28ee96195736038f8861ca0128ae10456b09ed
+JWT_SECRET=<secure-random-string>
+JWT_REFRESH_SECRET=<another-secure-random-string>
 JWT_EXPIRES_IN=20m
 JWT_REFRESH_EXPIRES_IN=7d
 

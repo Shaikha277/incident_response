@@ -6,6 +6,33 @@ audit logging, and incident lifecycle management.
 
 ---
 
+## 📦 Clone the Repository
+
+```bash
+git clone https://github.com/Shaikha277/incident_response.git
+cd incident_response
+```
+
+## Install dependencies 
+```
+ npm install
+ ```
+ 
+## Create PostgreSQL database
+Make sure PostgreSQL is running, then create a PostgreSQL database called ```incident_response``` :
+```
+CREATE DATABASE incident_response;
+```
+## Running the Project ▶️
+```
+npm run start:dev
+```
+---
+## Swagger UI will be available at:
+```
+http://localhost:3000/api
+```
+
 ## 🚀 Features
 
 ### 🔐 Authentication & Authorization
@@ -57,10 +84,6 @@ audit logging, and incident lifecycle management.
 
 ---
 
-
-
----
-
 ## ⚙️ Environment Variables
 
 Create a `.env` file:
@@ -85,16 +108,7 @@ MAX_LOGIN_ATTEMPTS=5
 LOCK_TIME=900000
 
 ```
-## Running the Project 
-```
-npm install
-npm run start:dev
-```
----
-## Swagger UI will be available at:
-```
-http://localhost:3000/api
-```
+
 
 ## An admin account is automatically seeded on startup:
 - Email: admin@company.com
